@@ -1,3 +1,6 @@
+import dill
+
+
 class BPE:
     """
     Простая реализация алгоритма Byte Pair Encoding.
@@ -549,3 +552,57 @@ class BPE:
         #
         # "banana"
         return "".join(tokens)
+
+    def save(self, filename):
+        """
+        Сохраняет обученную модель BPE в файл с помощью dill.
+
+        Метод сериализует текущий объект (включая все его атрибуты,
+        такие как id2token, token2id и merges) в бинарный файл.
+
+        Parameters
+        ----------
+        filename : str
+            Имя файла (или путь к файлу), куда будет сохранён объект.
+
+        Примеры
+        --------
+        >>> bpe = BPE(vocab_size=100)
+        >>> bpe.fit("some text data")
+        >>> bpe.save("bpe_model.dill")
+        Объект сохранён в bpe_model.dill
+        """
+        with open(filename, 'wb') as f:
+            dill.dump(self, f)
+        print(f"Объект сохранён в {filename}")
+
+    @classmethod
+    def load(cls, filename):
+        """
+        Загружает обученную модель BPE из файла.
+
+        Это метод класса, который создаёт и возвращает новый экземпляр BPE,
+        восстановленный из сериализованного состояния.
+
+        Parameters
+        ----------
+        filename : str
+            Имя файла (или путь к файлу), из которого будет загружен объект.
+
+        Returns
+        -------
+        BPE
+            Новый экземпляр класса BPE, восстановленный из файла.
+
+        Примеры
+        --------
+        >>> bpe = BPE.load("bpe_model.dill")
+        Объект загружен из bpe_model.dill
+        >>> bpe.encode("new text")
+        [1, 2, 3]
+        """
+        with open(filename, 'rb') as f:
+            obj = dill.load(f)
+
+        print(f"Объект загружен из {filename}")
+        return obj
