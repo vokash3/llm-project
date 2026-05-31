@@ -15,3 +15,6 @@ if __name__ == '__main__':
     for token in tokens:
         print(f"{token}: {bpe.id2token[token]}")
     print("============================\n\n")
+    print("TOKENS TO WORDS (DECODE):")
+    print(bpe.decode(tokens))
+    print("============================\n\n")
